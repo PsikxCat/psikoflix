@@ -8,6 +8,8 @@ interface GlobalProviderProps {
 
 export default function GlobalProvider({ children }: GlobalProviderProps) {
   const [homePageMedia, setHomePageMedia] = useState<TMediaCategory[] | []>([])
+  const [TVPageMedia, setTVPageMedia] = useState<TMediaCategory[] | []>([])
+  const [MoviesPageMedia, setMoviesPageMedia] = useState<TMediaCategory[] | []>([])
 
   console.log('homePageMedia --->', homePageMedia)
 
@@ -16,6 +18,10 @@ export default function GlobalProvider({ children }: GlobalProviderProps) {
       value={{
         homePageMedia,
         setHomePageMedia,
+        TVPageMedia,
+        setTVPageMedia,
+        MoviesPageMedia,
+        setMoviesPageMedia,
       }}
     >
       {children}

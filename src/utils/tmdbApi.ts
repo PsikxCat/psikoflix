@@ -1,16 +1,20 @@
 import { TMediaItem } from '@/types'
 
-const TMDB_BASE_URL = import.meta.env.VITE_TMDB_BASE_URL
-const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY
+const TMDB_BASE_URL = import.meta.env.VITE_TMDB_API_BASE_URL
+// const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY
 
-const options = { method: 'GET', headers: { accept: 'application/json' } }
+const options = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+    Authorization:
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5ZjBlMDIxYzIzMDBhNzQzODRiOTRlZWU4YTUyYzM0ZSIsIm5iZiI6MTcyMTYxOTE3My42NDEwMDUsInN1YiI6IjYyNTk4YjdjZjU0ODM2MTQyNmE2MmIwMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.IbWSm63tSAwK3VpZirxLeIoEZ5YRccv6ag5XAL5z2Xk',
+  },
+}
 
 export const getTrendingMedia = async (mediaType: string, timeframe: string): Promise<TMediaItem[]> => {
   try {
-    const response = await fetch(
-      `${TMDB_BASE_URL}/trending/${mediaType}/${timeframe}?api_key=${TMDB_API_KEY}&language=es-MX`,
-      options,
-    )
+    const response = await fetch(`${TMDB_BASE_URL}/trending/${mediaType}/${timeframe}?language=es-MX`, options)
 
     const trendingMedia = await response.json()
     return trendingMedia && trendingMedia.results
@@ -21,10 +25,7 @@ export const getTrendingMedia = async (mediaType: string, timeframe: string): Pr
 
 export const getMediaList = async (mediaType: string, list: string): Promise<TMediaItem[]> => {
   try {
-    const response = await fetch(
-      `${TMDB_BASE_URL}/${mediaType}/${list}?api_key=${TMDB_API_KEY}&language=es-MX`,
-      options,
-    )
+    const response = await fetch(`${TMDB_BASE_URL}/${mediaType}/${list}?language=es-MX`, options)
 
     const mediaList = await response.json()
     return mediaList && mediaList.results
@@ -36,7 +37,7 @@ export const getMediaList = async (mediaType: string, list: string): Promise<TMe
 export const getMediaByGenre = async (mediaType: string, genreId: string) => {
   try {
     const response = await fetch(
-      `${TMDB_BASE_URL}/discover/${mediaType}?with_genres=${genreId}&sort_by=popularity.desc&api_key=${TMDB_API_KEY}&language=es-MX`,
+      `${TMDB_BASE_URL}/discover/${mediaType}?with_genres=${genreId}&sort_by=popularity.desc&language=es-MX`,
       options,
     )
 
@@ -49,7 +50,7 @@ export const getMediaByGenre = async (mediaType: string, genreId: string) => {
 
 export const getMediaVideosById = async (mediaType: string, id: string) => {
   try {
-    const response = await fetch(`${TMDB_BASE_URL}/${mediaType}/${id}/videos?api_key=${TMDB_API_KEY}&language=es-MX`, {
+    const response = await fetch(`${TMDB_BASE_URL}/${mediaType}/${id}/videos?language=es-MX`, {
       method: 'GET',
     })
 
@@ -62,10 +63,7 @@ export const getMediaVideosById = async (mediaType: string, id: string) => {
 
 export const getSearchMedia = async (query: string) => {
   try {
-    const response = await fetch(
-      `${TMDB_BASE_URL}/search/multi?query=${query}&api_key=${TMDB_API_KEY}&language=es-MX`,
-      options,
-    )
+    const response = await fetch(`${TMDB_BASE_URL}/search/multi?query=${query}&language=es-MX`, options)
     const searchMedia = await response.json()
 
     return searchMedia
@@ -77,7 +75,7 @@ export const getSearchMedia = async (query: string) => {
 export const getMediaDetails = async (mediaType: string, id: string) => {
   try {
     const response = await fetch(
-      `${TMDB_BASE_URL}/${mediaType}/${id}?append_to_response=videos&api_key=${TMDB_API_KEY}&language=es-MX`,
+      `${TMDB_BASE_URL}/${mediaType}/${id}?append_to_response=videos&language=es-MX`,
       options,
     )
 
@@ -91,10 +89,7 @@ export const getMediaDetails = async (mediaType: string, id: string) => {
 
 export const getSimilarMedia = async (mediaType: string, id: string) => {
   try {
-    const response = await fetch(
-      `${TMDB_BASE_URL}/${mediaType}/${id}/similar?api_key=${TMDB_API_KEY}&language=es-MX`,
-      options,
-    )
+    const response = await fetch(`${TMDB_BASE_URL}/${mediaType}/${id}/similar?language=es-MX`, options)
 
     const similarMedia = await response.json()
     return similarMedia && similarMedia.results
