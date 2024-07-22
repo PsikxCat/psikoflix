@@ -12,7 +12,7 @@ export default function Navbar() {
       href: '/',
     },
     {
-      label: 'Series',
+      label: 'TV',
       href: '/tv',
     },
     {
@@ -32,8 +32,10 @@ export default function Navbar() {
   // Actualizar el estado de isScrolled cuando el usuario haga scroll
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 0) setIsScrolled(true)
-      else setIsScrolled(false)
+      if (window.scrollY > 0) {
+        setIsScrolled(true)
+        setIsMenuOpen(false)
+      } else setIsScrolled(false)
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -43,7 +45,7 @@ export default function Navbar() {
 
   return (
     <section
-      className={`sticky flex h-20 w-full justify-between px-[6%] py-5 text-primary ${isScrolled && 'bg-dark'} z-10 h-20`}
+      className={`sticky top-0 flex h-20 w-full justify-between px-[6%] py-5 text-primary transition-all duration-200 ease-in-out ${isScrolled ? 'bg-dark' : 'hover:bg-black/40'} z-10 h-20`}
     >
       {/* left side */}
       <div className="flex items-center gap-12">

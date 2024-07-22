@@ -16,13 +16,13 @@ export default function App() {
     <section className="flex_center_col min-h-[100svh]">
       <Navbar />
 
-      <div className="flex_center flex-1">
+      <section className="flex w-full flex-1 flex-col border border-red-500">
         <RouterProvider router={router} />
-      </div>
+      </section>
 
-      <div className="flex_center w-full border">
+      <section className="flex_center w-full border">
         <span className="inline-block scale-x-[-1]">©</span> 2024. Ningun derecho reservado.
-      </div>
+      </section>
     </section>
   )
 }

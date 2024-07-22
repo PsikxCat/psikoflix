@@ -18,7 +18,7 @@ export default function UserMenu({ setIsMenuOpen, isScrolled }: UserMenuProps) {
       <div className="fixed inset-0 z-40" onClick={handleClose} />
 
       <section
-        className={`absolute top-[79px] z-50 bg-dark px-3 pb-4 pt-2 ${isScrolled ? 'rounded-b-md' : 'rounded-md'}`}
+        className={`absolute top-[80px] z-50 rounded-b-md px-3 pb-4 pt-2 ${isScrolled ? 'bg-dark' : 'bg-black/40'}`}
       >
         <p className="p-1 font-bold text-white">Usuario</p>
 
