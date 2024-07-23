@@ -1,10 +1,8 @@
+/* eslint-disable no-undef */
 /** @type {import('tailwindcss').Config} */
 
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
-  // content: {
-  //   files: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
-  // },
   theme: {
     extend: {
       textColor: {
@@ -27,4 +25,5 @@ export default {
       },
     },
   },
+  plugins: [require('tailwind-scrollbar'), require('tailwind-scrollbar-hide')],
 }

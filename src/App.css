@@ -18,4 +18,48 @@
   .mask_gradient {
     mask-image: linear-gradient(to right, transparent, black 50%);
   }
+
+  .no_drag {
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+  }
+
+  .loader_spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: 37px 0 0 -25px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .loader_spinner:after {
+    content: "";
+    background-image: url(/src/assets/spinner.webp);
+    background-repeat: no-repeat;
+    background-position-x: 50%;
+    background-position-y: 50%;
+    -moz-background-size: 100%;
+    -o-background-size: 100%;
+    background-size: 100%;
+    position: absolute;
+    margin: -6px;
+    width: inherit;
+    height: inherit;
+    animation: circleLoader-spin 1.1s linear infinite,1!important;
+    -webkit-animation: circleLoader-spin 1.1s linear infinite,1!important;
+  }
+
+  @keyframes circleLoader-spin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes circleLoader-spin {
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
 }

@@ -11,8 +11,6 @@ export default function GlobalProvider({ children }: GlobalProviderProps) {
   const [TVPageMedia, setTVPageMedia] = useState<TMediaCategory[] | []>([])
   const [MoviesPageMedia, setMoviesPageMedia] = useState<TMediaCategory[] | []>([])
 
-  console.log('homePageMedia --->', homePageMedia)
-
   return (
     <GlobalContext.Provider
       value={{

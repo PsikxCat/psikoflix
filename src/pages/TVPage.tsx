@@ -2,11 +2,11 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 
 import { GlobalContext } from '@/context/GlobalContext'
 import { TPopulatedMediaItem } from '@/types'
-import { fetchHomeMediaData } from '@/utils'
+import { fetchHomeMediaData, fetchTVMediaData } from '@/utils'
 import { Banner, LoaderSpinner, MediaCarousel } from '@/components'
 
-export default function HomePage() {
-  const { homePageMedia, setHomePageMedia } = useContext(GlobalContext)
+export default function TVPage() {
+  const { TVPageMedia, setTVPageMedia } = useContext(GlobalContext)
   const [bannerMedia, setBannerMedia] = useState<TPopulatedMediaItem | null>(null)
   const [pageLoader, setPageLoader] = useState<boolean>(true)
 
@@ -18,24 +18,24 @@ export default function HomePage() {
     setPageLoader(true)
 
     // Si ya tenemos los datos de la página de inicio, seleccionamos un banner aleatorio
-    if (homePageMedia.length > 0 && homePageMedia[0].media.length > 0) {
-      const newBanner = selectRandomBanner(homePageMedia[0].media)
+    if (TVPageMedia.length > 0 && TVPageMedia[0].media.length > 0) {
+      const newBanner = selectRandomBanner(TVPageMedia[0].media)
       setBannerMedia(newBanner)
       setPageLoader(false)
       return
     }
 
     ;(async () => {
-      const newHomePageMedia = await fetchHomeMediaData()
-      setHomePageMedia(newHomePageMedia)
+      const newTVPageMedia = await fetchTVMediaData()
+      setTVPageMedia(newTVPageMedia)
 
-      if (newHomePageMedia.length > 0 && newHomePageMedia[0].media.length > 0) {
-        const newBanner = selectRandomBanner(newHomePageMedia[0].media)
+      if (newTVPageMedia.length > 0 && newTVPageMedia[0].media.length > 0) {
+        const newBanner = selectRandomBanner(newTVPageMedia[0].media)
         setBannerMedia(newBanner)
       }
     })()
 
-    setTimeout(() => setPageLoader(false), 300)
+    setTimeout(() => setPageLoader(false), 500)
   }, [fetchHomeMediaData, selectRandomBanner])
 
   if (pageLoader) return <LoaderSpinner />
@@ -45,8 +45,8 @@ export default function HomePage() {
       <Banner media={bannerMedia} />
 
       <section className="space-y-6 md:space-y-24">
-        {homePageMedia?.length &&
-          homePageMedia.map((categorie) => <MediaCarousel key={categorie.categoryName} mediaData={categorie} />)}
+        {TVPageMedia?.length &&
+          TVPageMedia.map((categorie) => <MediaCarousel key={categorie.categoryName} mediaData={categorie} />)}
       </section>
     </section>
   )

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { BellIcon, SearchIcon, User, ChevronDown, ChevronUp } from 'lucide-react'
+import { Link } from 'react-router-dom'
+
 import { UserMenu } from '@/components'
 
 export default function Navbar() {
@@ -18,10 +20,6 @@ export default function Navbar() {
     {
       label: 'Películas',
       href: '/movies',
-    },
-    {
-      label: 'Novedades',
-      href: '/new',
     },
     {
       label: 'Mi lista',
@@ -57,7 +55,7 @@ export default function Navbar() {
               className="text_shadow cursor-pointer font-medium transition-all duration-200 ease-in-out hover:text-accent"
               key={href}
             >
-              {label}
+              <Link to={href}>{label}</Link>
             </li>
           ))}
         </ul>

@@ -1,1 +1,5 @@
 export { default as HomePage } from './HomePage'
+export { default as TVPage } from './TVPage'
+export { default as MoviesPage } from './MoviesPage'
+export { default as MyListPage } from './MyListPage'
+export { default as NotFoundPage } from './NotFoundPage'

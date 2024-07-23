@@ -1,5 +1,13 @@
 import { TMediaCategory, TMediaItem, TPopulatedMediaItem } from '@/types'
-import { getMediaList, getTrendingMedia } from './tmdbApi'
+import { getMediaByGenre, getMediaList, getTrendingMedia } from './tmdbApi'
+
+// | Función para truncar un texto a un número de palabras
+export const truncateText = (text: string, wordsCount: number): string => {
+  const words = text.split(' ')
+  if (words.length <= wordsCount) return text
+
+  return `${words.slice(0, wordsCount).join(' ')}...`
+}
 
 // | Función de utilidad para poblar los items de media
 const populateMediaItem = (item: TMediaItem, defaultMediaType?: 'movie' | 'tv'): TPopulatedMediaItem => ({
@@ -41,6 +49,64 @@ export const fetchHomeMediaData = async () => {
     ]
   } catch (error) {
     console.error('Error fetching home page media:', error)
+    return []
+  }
+}
+
+// | Función para obtener los datos de media en la página de series
+export const fetchTVMediaData = async () => {
+  try {
+    const [trendingTvShows, topRatedTvShows, actionGenre, sciFiGenre, animationGenre, comedyGenre, crimeGenre] =
+      await Promise.all([
+        getTrendingMedia('tv', 'day'),
+        getMediaList('tv', 'top_rated'),
+        getMediaByGenre('tv', 10759),
+        getMediaByGenre('tv', 10765),
+        getMediaByGenre('tv', 16),
+        getMediaByGenre('tv', 35),
+        getMediaByGenre('tv', 80),
+      ])
+
+    return [
+      createMediaCategory('En tendencia', trendingTvShows, 'tv'),
+      createMediaCategory('Mejor valoradas', topRatedTvShows, 'tv'),
+      createMediaCategory('Acción', actionGenre, 'tv'),
+      createMediaCategory('Ciencia ficción', sciFiGenre, 'tv'),
+      createMediaCategory('Animación', animationGenre, 'tv'),
+      createMediaCategory('Comedia', comedyGenre, 'tv'),
+      createMediaCategory('Crimen', crimeGenre, 'tv'),
+    ]
+  } catch (error) {
+    console.error('Error fetching TV page media:', error)
+    return []
+  }
+}
+
+// | Función para obtener los datos de media en la página de películas
+export const fetchMoviesMediaData = async () => {
+  try {
+    const [trendingMovies, topRatedMovies, actionGenre, sciFiGenre, animationGenre, thrillerGenre, comedyGenre] =
+      await Promise.all([
+        getTrendingMedia('movie', 'day'),
+        getMediaList('movie', 'top_rated'),
+        getMediaByGenre('movie', 28),
+        getMediaByGenre('movie', 878),
+        getMediaByGenre('movie', 16),
+        getMediaByGenre('movie', 53),
+        getMediaByGenre('movie', 35),
+      ])
+
+    return [
+      createMediaCategory('En tendencia', trendingMovies, 'movie'),
+      createMediaCategory('Mejor valoradas', topRatedMovies, 'movie'),
+      createMediaCategory('Acción', actionGenre, 'movie'),
+      createMediaCategory('Ciencia ficción', sciFiGenre, 'movie'),
+      createMediaCategory('Animación', animationGenre, 'movie'),
+      createMediaCategory('Thriller', thrillerGenre, 'movie'),
+      createMediaCategory('Comedia', comedyGenre, 'movie'),
+    ]
+  } catch (error) {
+    console.error('Error fetching Movies page media:', error)
     return []
   }
 }

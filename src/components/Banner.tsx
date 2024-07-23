@@ -1,5 +1,6 @@
 import { PlayCircle, InfoIcon } from 'lucide-react'
 import { TPopulatedMediaItem } from '@/types'
+import { truncateText } from '@/utils'
 
 interface IBannerProps {
   media: TPopulatedMediaItem | null
@@ -10,7 +11,7 @@ export default function Banner({ media }: IBannerProps) {
 
   // TODO: Funcionalidad de los botones
   return (
-    <>
+    <section className="mb-24 flex flex-col space-y-6 pl-[6%] lg:h-[65hv]">
       {/* imagen */}
       <div className="absolute left-0 top-0 -z-10 h-[95vh] w-full">
         <img
@@ -22,7 +23,9 @@ export default function Banner({ media }: IBannerProps) {
 
       <h1 className="text_shadow pt-10 text-fluid-title font-bold leading-none">{media?.title}</h1>
 
-      <p className="text_shadow max-w-xs text-fluid-base md:max-w-lg">{media?.overview}</p>
+      <p className="text_shadow max-w-xs text-fluid-base md:max-w-lg">
+        {media?.overview && truncateText(media.overview as string, 80)}
+      </p>
 
       {/* botones */}
       <div className="flex space-x-3 pt-1">
@@ -36,6 +39,6 @@ export default function Banner({ media }: IBannerProps) {
           <span className="pr-1">Más Info</span>
         </button>
       </div>
-    </>
+    </section>
   )
 }

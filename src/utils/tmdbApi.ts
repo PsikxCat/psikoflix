@@ -1,7 +1,6 @@
 import { TMediaItem } from '@/types'
 
 const TMDB_BASE_URL = import.meta.env.VITE_TMDB_API_BASE_URL
-// const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY
 
 const options = {
   method: 'GET',
@@ -13,6 +12,7 @@ const options = {
 }
 
 export const getTrendingMedia = async (mediaType: string, timeframe: string): Promise<TMediaItem[]> => {
+  console.log('ejecutando getTrendingMedia')
   try {
     const response = await fetch(`${TMDB_BASE_URL}/trending/${mediaType}/${timeframe}?language=es-MX`, options)
 
@@ -24,6 +24,7 @@ export const getTrendingMedia = async (mediaType: string, timeframe: string): Pr
 }
 
 export const getMediaList = async (mediaType: string, list: string): Promise<TMediaItem[]> => {
+  console.log('ejecutando getMediaList')
   try {
     const response = await fetch(`${TMDB_BASE_URL}/${mediaType}/${list}?language=es-MX`, options)
 
@@ -34,7 +35,8 @@ export const getMediaList = async (mediaType: string, list: string): Promise<TMe
   }
 }
 
-export const getMediaByGenre = async (mediaType: string, genreId: string) => {
+export const getMediaByGenre = async (mediaType: string, genreId: number) => {
+  console.log('ejecutando getMediaByGenre')
   try {
     const response = await fetch(
       `${TMDB_BASE_URL}/discover/${mediaType}?with_genres=${genreId}&sort_by=popularity.desc&language=es-MX`,
