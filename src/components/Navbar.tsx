@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { BellIcon, SearchIcon, User, ChevronDown, ChevronUp } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 import { UserMenu } from '@/components'
 
@@ -55,7 +55,9 @@ export default function Navbar() {
               className="text_shadow cursor-pointer font-medium transition-all duration-200 ease-in-out hover:text-accent"
               key={href}
             >
-              <Link to={href}>{label}</Link>
+              <NavLink to={href} className={({ isActive }) => (isActive ? 'text-accent' : '')}>
+                {label}
+              </NavLink>
             </li>
           ))}
         </ul>

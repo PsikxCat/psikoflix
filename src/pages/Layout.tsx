@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { Navbar } from '@/components'
+import { Footer, Navbar } from '@/components'
 
 export default function Layout() {
   return (
@@ -11,10 +11,7 @@ export default function Layout() {
         <Outlet />
       </section>
 
-      <section className="flex_center my-8 w-full text-xs">
-        <span className="inline-block scale-x-[-1]">©</span>
-        {new Date().getFullYear()} Psikocat. Ningún derecho reservado.
-      </section>
+      <Footer />
     </section>
   )
 }

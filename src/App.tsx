@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import './App.css'
 import { NotFoundPage, HomePage, MoviesPage, MyListPage, TVPage } from '@/pages'
-import { Layout } from '@/components'
+import { Layout } from '@/pages'
 
 const router = createBrowserRouter([
   {
