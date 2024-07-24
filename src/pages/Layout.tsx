@@ -1,7 +1,16 @@
+import { useContext } from 'react'
 import { Outlet } from 'react-router-dom'
+
+import { GlobalContext } from '@/context/GlobalContext'
 import { Footer, Navbar } from '@/components'
+import { LoginPage } from '@/pages'
 
 export default function Layout() {
+  const { isUserLogged } = useContext(GlobalContext)
+  console.log('logueado?', isUserLogged)
+
+  if (!isUserLogged) return <LoginPage />
+
   return (
     <section className="flex_center_col min-h-[100svh]">
       <Navbar />

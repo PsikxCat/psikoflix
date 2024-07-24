@@ -8,6 +8,8 @@ export interface GlobalContextType {
   setTVPageMedia: Dispatch<SetStateAction<TMediaCategory[]>>
   MoviesPageMedia: TMediaCategory[] | []
   setMoviesPageMedia: Dispatch<SetStateAction<TMediaCategory[]>>
+  isUserLogged: boolean
+  setIsUserLogged: Dispatch<SetStateAction<boolean>>
 }
 
 export const GlobalContext = createContext<GlobalContextType>({} as GlobalContextType)

@@ -47,7 +47,7 @@ export default function Navbar() {
     >
       {/* left side */}
       <div className="flex items-center gap-12">
-        <img src="/psikoflix-logo.svg" alt="psikoflix logo" width={120} />
+        <img src="/psikoflix-logo.svg" alt="psikoflix logo" width={120} className="svg_shadow" />
 
         <ul className="flex gap-5">
           {menuItems.map(({ label, href }) => (

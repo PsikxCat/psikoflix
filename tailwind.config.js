@@ -17,6 +17,7 @@ export default {
         primary: 'var(--primary)',
         accent: 'var(--accent)',
         dark: 'var(--dark)',
+        'dark-gray': 'var(--dark-gray)',
       },
       fontSize: {
         'fluid-btn': 'clamp(.6rem, calc(.6rem + 0.5vw), 1.2rem)',

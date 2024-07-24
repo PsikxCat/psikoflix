@@ -10,6 +10,7 @@ export default function GlobalProvider({ children }: GlobalProviderProps) {
   const [homePageMedia, setHomePageMedia] = useState<TMediaCategory[] | []>([])
   const [TVPageMedia, setTVPageMedia] = useState<TMediaCategory[] | []>([])
   const [MoviesPageMedia, setMoviesPageMedia] = useState<TMediaCategory[] | []>([])
+  const [isUserLogged, setIsUserLogged] = useState<boolean>(false)
 
   return (
     <GlobalContext.Provider
@@ -20,6 +21,8 @@ export default function GlobalProvider({ children }: GlobalProviderProps) {
         setTVPageMedia,
         MoviesPageMedia,
         setMoviesPageMedia,
+        isUserLogged,
+        setIsUserLogged,
       }}
     >
       {children}
