@@ -23,6 +23,7 @@ export default {
         'fluid-btn': 'clamp(.6rem, calc(.6rem + 0.5vw), 1.2rem)',
         'fluid-base': 'clamp(.8rem, calc(.8rem + 0.5vw), 1.2rem)',
         'fluid-title': 'clamp(1.2rem, calc(1.2rem + 4vw), 4.5rem)',
+        'fluid-subtitle': 'clamp(1rem, calc(1rem + 1vw), 1.5rem)',
       },
     },
   },

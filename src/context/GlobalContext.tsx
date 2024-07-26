@@ -1,5 +1,5 @@
 import { type Dispatch, type SetStateAction, createContext } from 'react'
-import { TMediaCategory } from '@/types'
+import { TInfoModal, TMediaCategory } from '@/types'
 
 export interface GlobalContextType {
   homePageMedia: TMediaCategory[] | []
@@ -10,6 +10,8 @@ export interface GlobalContextType {
   setMoviesPageMedia: Dispatch<SetStateAction<TMediaCategory[]>>
   isUserLogged: boolean
   setIsUserLogged: Dispatch<SetStateAction<boolean>>
+  infoModalStats: TInfoModal
+  setInfoModalStats: Dispatch<SetStateAction<TInfoModal>>
 }
 
 export const GlobalContext = createContext<GlobalContextType>({} as GlobalContextType)

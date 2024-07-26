@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import { BellIcon, SearchIcon, User, ChevronDown, ChevronUp } from 'lucide-react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 
 import { UserMenu } from '@/components'
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+
+  const location = useLocation()
+  const isWatchPage = location.pathname.includes('watch')
 
   const menuItems = [
     {
@@ -43,7 +46,9 @@ export default function Navbar() {
 
   return (
     <section
-      className={`sticky top-0 flex h-20 w-full justify-between px-[6%] py-5 text-primary transition-all duration-200 ease-in-out ${isScrolled ? 'bg-dark' : 'hover:bg-black/40'} z-10 h-20`}
+      className={`sticky top-0 z-10 flex h-20 w-full justify-between px-[6%] py-5 text-primary transition-all duration-200 ease-in-out ${
+        isWatchPage ? 'bg-black/40' : isScrolled ? 'bg-dark' : 'hover:bg-black/40'
+      }`}
     >
       {/* left side */}
       <div className="flex items-center gap-12">
@@ -65,17 +70,17 @@ export default function Navbar() {
 
       {/* right side */}
       <div className="flex items-center gap-5">
-        <BellIcon className="cursor-pointer" size={24} />
-        <SearchIcon className="cursor-pointer" size={24} />
+        <BellIcon className="svg_shadow cursor-pointer" size={24} />
+        <SearchIcon className="svg_shadow cursor-pointer" size={24} />
 
         {/* menu */}
         <div className="flex items-center">
-          <User className="cursor-pointer" size={30} />
+          <User className="svg_shadow cursor-pointer" size={30} />
 
           {isMenuOpen ? (
-            <ChevronUp className="z-50 cursor-pointer" size={24} onClick={() => setIsMenuOpen(false)} />
+            <ChevronUp className="svg_shadow z-50 cursor-pointer" size={24} onClick={() => setIsMenuOpen(false)} />
           ) : (
-            <ChevronDown className="z-50 cursor-pointer" size={24} onClick={() => setIsMenuOpen(true)} />
+            <ChevronDown className="svg_shadow z-50 cursor-pointer" size={24} onClick={() => setIsMenuOpen(true)} />
           )}
         </div>
 

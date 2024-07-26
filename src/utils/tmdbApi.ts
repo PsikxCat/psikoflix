@@ -12,7 +12,6 @@ const options = {
 }
 
 export const getTrendingMedia = async (mediaType: string, timeframe: string): Promise<TMediaItem[]> => {
-  console.log('ejecutando getTrendingMedia')
   try {
     const response = await fetch(`${TMDB_BASE_URL}/trending/${mediaType}/${timeframe}?language=es-MX`, options)
 
@@ -24,7 +23,6 @@ export const getTrendingMedia = async (mediaType: string, timeframe: string): Pr
 }
 
 export const getMediaList = async (mediaType: string, list: string): Promise<TMediaItem[]> => {
-  console.log('ejecutando getMediaList')
   try {
     const response = await fetch(`${TMDB_BASE_URL}/${mediaType}/${list}?language=es-MX`, options)
 
@@ -36,7 +34,6 @@ export const getMediaList = async (mediaType: string, list: string): Promise<TMe
 }
 
 export const getMediaByGenre = async (mediaType: string, genreId: number) => {
-  console.log('ejecutando getMediaByGenre')
   try {
     const response = await fetch(
       `${TMDB_BASE_URL}/discover/${mediaType}?with_genres=${genreId}&sort_by=popularity.desc&language=es-MX`,
@@ -52,38 +49,10 @@ export const getMediaByGenre = async (mediaType: string, genreId: number) => {
 
 export const getMediaVideosById = async (mediaType: string, id: string) => {
   try {
-    const response = await fetch(`${TMDB_BASE_URL}/${mediaType}/${id}/videos?language=es-MX`, {
-      method: 'GET',
-    })
+    const response = await fetch(`${TMDB_BASE_URL}/${mediaType}/${id}/videos?language=es-MX`, options)
 
     const mediaVideos = await response.json()
     return mediaVideos && mediaVideos.results
-  } catch (error) {
-    throw new Error('Error fetching media videos' + error)
-  }
-}
-
-export const getSearchMedia = async (query: string) => {
-  try {
-    const response = await fetch(`${TMDB_BASE_URL}/search/multi?query=${query}&language=es-MX`, options)
-    const searchMedia = await response.json()
-
-    return searchMedia
-  } catch (error) {
-    throw new Error('Error fetching media videos' + error)
-  }
-}
-
-export const getMediaDetails = async (mediaType: string, id: string) => {
-  try {
-    const response = await fetch(
-      `${TMDB_BASE_URL}/${mediaType}/${id}?append_to_response=videos&language=es-MX`,
-      options,
-    )
-
-    const mediaDetails = await response.json()
-
-    return mediaDetails && mediaDetails.videos?.results
   } catch (error) {
     throw new Error('Error fetching media videos' + error)
   }
@@ -95,6 +64,17 @@ export const getSimilarMedia = async (mediaType: string, id: string) => {
 
     const similarMedia = await response.json()
     return similarMedia && similarMedia.results
+  } catch (error) {
+    throw new Error('Error fetching media videos' + error)
+  }
+}
+
+export const getSearchMedia = async (query: string) => {
+  try {
+    const response = await fetch(`${TMDB_BASE_URL}/search/multi?query=${query}&language=es-MX`, options)
+    const searchMedia = await response.json()
+
+    return searchMedia
   } catch (error) {
     throw new Error('Error fetching media videos' + error)
   }

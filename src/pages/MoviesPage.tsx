@@ -41,7 +41,7 @@ export default function MoviesPage() {
   if (pageLoader) return <LoaderSpinner />
 
   return (
-    <section className="flex w-full flex-col space-y-2 md:space-y-4">
+    <section className="flex w-full flex-col space-y-2 pb-20 md:space-y-4">
       <Banner media={bannerMedia} />
 
       <section className="space-y-6 md:space-y-24">

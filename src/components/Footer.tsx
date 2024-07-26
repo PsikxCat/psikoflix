@@ -2,7 +2,7 @@ import { Github, Twitter, Linkedin, BriefcaseBusiness } from 'lucide-react'
 
 export default function Footer() {
   return (
-    <section className="flex_center_col my-8 w-full gap-2 p-2">
+    <section className="flex_center_col w-full gap-2 bg-black/40 p-2 py-8">
       <div className="w-full text-center text-xs">
         <span className="inline-block scale-x-[-1]">©</span>
         {new Date().getFullYear()} Psikocat. Ningún derecho reservado.
