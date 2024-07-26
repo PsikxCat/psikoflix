@@ -54,33 +54,40 @@ export default function MoreInfoModal() {
   }
 
   return (
-    <section className="flex_center_col fixed inset-0 z-50 overflow-hidden overflow-y-scroll bg-black bg-opacity-90 scrollbar-hide">
-      <div
-        className="absolute inset-0 z-[60] cursor-pointer"
-        onClick={() => setInfoModalStats({ isOpen: false, mediaType: null, id: null })}
-      />
-
-      {/* Boton cerrar modal */}
-      <div className="absolute right-7 top-7 z-[70]">
-        <CircleX
-          className="h-8 w-8 cursor-pointer text-white hover:text-accent"
+    <section className="flex_center_col fixed inset-0 z-50 bg-black bg-opacity-90 p-5">
+      <>
+        {/* Overlay */}
+        <div
+          className="absolute inset-0 z-[60] cursor-pointer"
           onClick={() => setInfoModalStats({ isOpen: false, mediaType: null, id: null })}
         />
-      </div>
-
-      <div className="w-full max-w-[900px]">
-        {/* Video */}
-        <div className="flex_center z-[70] aspect-video h-full max-h-[500px] w-full">
-          <ReactPlayer
-            url={`https://www.youtube.com/watch?v=${actualMediaVideo?.key || 'cFS4Zcd_kb8'}`}
-            controls
-            width="100%"
-            height="100%"
+        {/* Boton cerrar modal */}
+        <div className="absolute right-7 top-7 z-[70]">
+          <CircleX
+            className="h-8 w-8 cursor-pointer text-white hover:text-accent"
+            onClick={() => setInfoModalStats({ isOpen: false, mediaType: null, id: null })}
           />
+        </div>
+      </>
+
+      {/* Contenido */}
+      <section className="z-[70] overflow-hidden overflow-y-scroll scrollbar-hide">
+        <h1 className="text_shadow mt-3 cursor-pointer text-fluid-title font-semibold">{actualMediaVideo?.name}</h1>
+
+        {/* Video */}
+        <div className="w-full max-w-[900px]">
+          <div className="flex_center z-[70] aspect-video h-full max-h-[500px] w-full">
+            <ReactPlayer
+              url={`https://www.youtube.com/watch?v=${actualMediaVideo?.key || 'cFS4Zcd_kb8'}`}
+              controls
+              width="100%"
+              height="100%"
+            />
+          </div>
         </div>
 
         {/* Similares */}
-        <div className="z-[70] rounded-b-md bg-[#181818] py-8 sm:p-8">
+        <div className="z-[70] w-full max-w-[900px] rounded-b-md bg-dark-gray py-8 sm:p-8">
           <h2 className="text_shadow mt-3 cursor-pointer text-fluid-subtitle font-semibold">
             {similarMedia?.categoryName}
           </h2>
@@ -90,7 +97,7 @@ export default function MoreInfoModal() {
               similarMedia.media.slice(0, 6).map((item) => <MediaCard key={item.id} mediaItem={item} isFromModal />)}
           </div>
         </div>
-      </div>
+      </section>
     </section>
   )
 }
