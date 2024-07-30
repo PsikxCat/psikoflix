@@ -59,7 +59,7 @@ export default function MoreInfoModal() {
           onClick={() => setInfoModalStats({ isOpen: false, mediaType: null, id: null })}
         />
         {/* Boton cerrar modal */}
-        <div className="absolute right-7 top-7 z-[70]">
+        <div className="absolute right-7 top-7 z-[90]">
           <CircleX
             className="h-8 w-8 cursor-pointer text-white hover:text-accent"
             onClick={() => setInfoModalStats({ isOpen: false, mediaType: null, id: null })}

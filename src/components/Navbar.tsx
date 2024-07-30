@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { User, ChevronDown, ChevronUp } from 'lucide-react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 
 import { Search, UserMenu } from '@/components'
 
@@ -52,7 +52,9 @@ export default function Navbar() {
     >
       {/* left side */}
       <div className="flex items-center gap-12">
-        <img src="/psikoflix-logo.svg" alt="psikoflix logo" width={120} className="svg_shadow" />
+        <Link to="/" className="cursor-pointer">
+          <img src="/psikoflix-logo.svg" alt="psikoflix logo" width={120} className="svg_shadow" />
+        </Link>
 
         <ul className="flex gap-5">
           {menuItems.map(({ label, href }) => (

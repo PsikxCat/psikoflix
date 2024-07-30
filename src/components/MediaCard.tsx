@@ -34,18 +34,18 @@ export default function MediaCard({ mediaItem, isFromModal }: IMediaCardProps) {
       {/* Imagen */}
       {!isFromModal ? (
         <Link
-          to={`/watch/${mediaType}/${mediaItem.id}${mediaItem.backdrop_path || mediaItem.poster_path}`}
+          to={`/watch/${mediaType}/${mediaItem.id}${mediaItem.poster_path || mediaItem.backdrop_path}`}
           className="no_drag"
         >
           <img
-            src={`https://image.tmdb.org/t/p/w500/${mediaItem.poster_path}`}
+            src={`https://image.tmdb.org/t/p/w500/${mediaItem.backdrop_path || mediaItem.poster_path}`}
             alt={mediaItem.title}
             className="no_drag h-full w-full rounded-md object-cover"
           />
         </Link>
       ) : (
         <img
-          src={`https://image.tmdb.org/t/p/w500/${mediaItem.poster_path}`}
+          src={`https://image.tmdb.org/t/p/w500/${mediaItem.poster_path || mediaItem.backdrop_path}`}
           alt={mediaItem.title}
           className="no_drag h-full w-full rounded-md object-cover"
           onClick={handlePlayClick}
@@ -61,7 +61,7 @@ export default function MediaCard({ mediaItem, isFromModal }: IMediaCardProps) {
 
         {!isFromModal ? (
           <Link
-            to={`/watch/${mediaType}/${mediaItem?.id}${mediaItem?.backdrop_path || mediaItem?.poster_path}`}
+            to={`/watch/${mediaType}/${mediaItem?.id}${mediaItem?.poster_path || mediaItem?.backdrop_path}`}
             className="z-10"
           >
             <PlayCircle className="svg_shadow z-10 mr-1 hidden h-11 w-11 cursor-pointer p-1 text-white/50 group-hover:flex hover:text-primary" />
