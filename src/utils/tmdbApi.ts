@@ -58,6 +58,17 @@ export const getMediaVideosById = async (mediaType: string, id: string) => {
   }
 }
 
+export const getMediaDetails = async (mediaType: string, id: string) => {
+  try {
+    const response = await fetch(`${TMDB_BASE_URL}/${mediaType}/${id}/videos`, options)
+
+    const mediaDetails = await response.json()
+    return mediaDetails && mediaDetails.results
+  } catch (error) {
+    throw new Error('Error fetching media videos' + error)
+  }
+}
+
 export const getSimilarMedia = async (mediaType: string, id: string) => {
   try {
     const response = await fetch(`${TMDB_BASE_URL}/${mediaType}/${id}/similar?language=es-MX`, options)
@@ -74,7 +85,7 @@ export const getSearchMedia = async (query: string) => {
     const response = await fetch(`${TMDB_BASE_URL}/search/multi?query=${query}&language=es-MX`, options)
     const searchMedia = await response.json()
 
-    return searchMedia
+    return searchMedia && searchMedia.results
   } catch (error) {
     throw new Error('Error fetching media videos' + error)
   }

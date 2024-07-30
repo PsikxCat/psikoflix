@@ -4,14 +4,14 @@ import ReactPlayer from 'react-player'
 
 import { GlobalContext } from '@/context/GlobalContext'
 import { TMediaCategory, TMediaVideo } from '@/types'
-import { getMediaVideosById, getSimilarMedia } from '@/utils/tmdbApi'
+import { getMediaDetails } from '@/utils/tmdbApi'
 import { LoaderSpinner, MediaCard } from '@/components'
-import { createMediaCategory } from '@/utils'
+import { fetchSimilarMediaData } from '@/utils'
 
 export default function MoreInfoModal() {
   const { infoModalStats, setInfoModalStats } = useContext(GlobalContext)
   const [actualMediaVideo, setActualMediaVideo] = useState<TMediaVideo | null>(null)
-  const [similarMedia, setSimilarMedia] = useState<TMediaCategory | null>(null)
+  const [similarMedia, setSimilarMedia] = useState<TMediaCategory[] | null>(null)
   const [pageLoader, setPageLoader] = useState<boolean>(true)
 
   useEffect(() => {
@@ -24,8 +24,7 @@ export default function MoreInfoModal() {
       setPageLoader(true)
       const { mediaType, id } = infoModalStats
 
-      const mediaVideosById: TMediaVideo[] = await getMediaVideosById(mediaType as string, id!.toString())
-      const similar = await getSimilarMedia(mediaType as string, id!.toString())
+      const mediaVideosById: TMediaVideo[] = await getMediaDetails(mediaType as string, id!.toString())
 
       if (mediaVideosById?.length) {
         const details =
@@ -36,10 +35,8 @@ export default function MoreInfoModal() {
         setActualMediaVideo(details)
       } else setActualMediaVideo(null)
 
-      if (similar?.length) {
-        const similarMediaPopulated = createMediaCategory('Similares', similar, mediaType as 'movie' | 'tv')
-        setSimilarMedia(similarMediaPopulated)
-      }
+      const newSimilarMedia = await fetchSimilarMediaData(mediaType as string, id!.toString())
+      setSimilarMedia(newSimilarMedia)
 
       setTimeout(() => setPageLoader(false), 200)
     })()
@@ -71,8 +68,10 @@ export default function MoreInfoModal() {
       </>
 
       {/* Contenido */}
-      <section className="z-[70] overflow-hidden overflow-y-scroll scrollbar-hide">
-        <h1 className="text_shadow mt-3 cursor-pointer text-fluid-title font-semibold">{actualMediaVideo?.name}</h1>
+      <section className="z-[70] w-full max-w-[900px] overflow-hidden overflow-y-scroll scrollbar-hide">
+        <h1 className="text_shadow my-3 cursor-pointer text-fluid-title font-semibold leading-[70px]">
+          {actualMediaVideo?.name}
+        </h1>
 
         {/* Video */}
         <div className="w-full max-w-[900px]">
@@ -89,12 +88,17 @@ export default function MoreInfoModal() {
         {/* Similares */}
         <div className="z-[70] w-full max-w-[900px] rounded-b-md bg-dark-gray py-8 sm:p-8">
           <h2 className="text_shadow mt-3 cursor-pointer text-fluid-subtitle font-semibold">
-            {similarMedia?.categoryName}
+            {similarMedia?.[0].categoryName}
           </h2>
 
           <div className="grid grid-cols-2 items-center gap-3 scrollbar-hide sm:grid-cols-3 md:p-2">
-            {similarMedia?.media.length &&
-              similarMedia.media.slice(0, 6).map((item) => <MediaCard key={item.id} mediaItem={item} isFromModal />)}
+            {similarMedia?.[0].media.map((item) => <MediaCard key={item.id} mediaItem={item} isFromModal />)}
+
+            {similarMedia?.[0].media?.length === 0 && (
+              <div className="flex_center_col col-span-3">
+                <h3 className="text_shadow text-fluid-subtitle font-semibold">No se encontraron resultados</h3>
+              </div>
+            )}
           </div>
         </div>
       </section>

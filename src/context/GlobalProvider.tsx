@@ -16,7 +16,6 @@ export default function GlobalProvider({ children }: GlobalProviderProps) {
     mediaType: null,
     id: null,
   })
-  console.log(infoModalStats)
 
   return (
     <GlobalContext.Provider

@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import './App.css'
-import { NotFoundPage, HomePage, MoviesPage, MyListPage, TVPage, WatchPage } from '@/pages'
+import { NotFoundPage, HomePage, MoviesPage, MyListPage, TVPage, WatchPage, SearchPage } from '@/pages'
 import { Layout } from '@/pages'
 
 const router = createBrowserRouter([
@@ -15,6 +15,7 @@ const router = createBrowserRouter([
       { path: 'movies', element: <MoviesPage /> },
       { path: 'my-list', element: <MyListPage /> },
       { path: 'watch/:mediaType/:id/:imgUrl', element: <WatchPage /> },
+      { path: 'search/:query', element: <SearchPage /> },
     ],
   },
 ])

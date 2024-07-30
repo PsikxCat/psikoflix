@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 
 import { GlobalContext } from '@/context/GlobalContext'
 import { TPopulatedMediaItem } from '@/types'
-import { fetchHomeMediaData, fetchMoviesMediaData } from '@/utils'
+import { fetchMoviesMediaData } from '@/utils'
 import { Banner, LoaderSpinner, MediaCarousel } from '@/components'
 
 export default function MoviesPage() {
@@ -36,7 +36,7 @@ export default function MoviesPage() {
     })()
 
     setTimeout(() => setPageLoader(false), 500)
-  }, [fetchHomeMediaData, selectRandomBanner])
+  }, [selectRandomBanner])
 
   if (pageLoader) return <LoaderSpinner />
 

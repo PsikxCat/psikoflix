@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { BellIcon, SearchIcon, User, ChevronDown, ChevronUp } from 'lucide-react'
+import { User, ChevronDown, ChevronUp } from 'lucide-react'
 import { NavLink, useLocation } from 'react-router-dom'
 
-import { UserMenu } from '@/components'
+import { Search, UserMenu } from '@/components'
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
@@ -70,8 +70,7 @@ export default function Navbar() {
 
       {/* right side */}
       <div className="flex items-center gap-5">
-        <BellIcon className="svg_shadow cursor-pointer" size={24} />
-        <SearchIcon className="svg_shadow cursor-pointer" size={24} />
+        <Search />
 
         {/* menu */}
         <div className="flex items-center">

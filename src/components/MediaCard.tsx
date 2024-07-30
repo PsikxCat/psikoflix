@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Plus, InfoIcon, PlayCircle } from 'lucide-react'
 
 import { GlobalContext } from '@/context/GlobalContext'
@@ -12,12 +12,16 @@ interface IMediaCardProps {
 
 export default function MediaCard({ mediaItem, isFromModal }: IMediaCardProps) {
   const { setInfoModalStats } = useContext(GlobalContext)
+  const navigate = useNavigate()
+  const mediaType = mediaItem?.media_type as string
 
-  const handleCardClick = () => {
+  const handlePlayClick = () => {
+    navigate(`/watch/${mediaType}/${mediaItem?.id}${mediaItem?.backdrop_path || mediaItem?.poster_path}`)
+
     setInfoModalStats({
-      isOpen: true,
-      mediaType: mediaItem?.media_type as string,
-      id: mediaItem?.id as number,
+      isOpen: false,
+      mediaType: null,
+      id: null,
     })
   }
 
@@ -27,9 +31,10 @@ export default function MediaCard({ mediaItem, isFromModal }: IMediaCardProps) {
         {mediaItem.title}
       </h3>
 
+      {/* Imagen */}
       {!isFromModal ? (
         <Link
-          to={`/watch/${mediaItem.media_type}/${mediaItem.id}${mediaItem.backdrop_path || mediaItem.poster_path}`}
+          to={`/watch/${mediaType}/${mediaItem.id}${mediaItem.backdrop_path || mediaItem.poster_path}`}
           className="no_drag"
         >
           <img
@@ -43,7 +48,7 @@ export default function MediaCard({ mediaItem, isFromModal }: IMediaCardProps) {
           src={`https://image.tmdb.org/t/p/w500/${mediaItem.poster_path}`}
           alt={mediaItem.title}
           className="no_drag h-full w-full rounded-md object-cover"
-          onClick={handleCardClick}
+          onClick={handlePlayClick}
         />
       )}
 
@@ -54,19 +59,26 @@ export default function MediaCard({ mediaItem, isFromModal }: IMediaCardProps) {
           onClick={() => alert('TODO: Agregar a la lista')}
         />
 
-        <Link
-          to={`/watch/${mediaItem?.media_type}/${mediaItem?.id}${mediaItem?.backdrop_path || mediaItem?.poster_path}`}
-          className="z-10"
-        >
-          <PlayCircle className="svg_shadow z-10 mr-1 hidden h-11 w-11 cursor-pointer p-1 text-white/50 group-hover:flex hover:text-primary" />
-        </Link>
+        {!isFromModal ? (
+          <Link
+            to={`/watch/${mediaType}/${mediaItem?.id}${mediaItem?.backdrop_path || mediaItem?.poster_path}`}
+            className="z-10"
+          >
+            <PlayCircle className="svg_shadow z-10 mr-1 hidden h-11 w-11 cursor-pointer p-1 text-white/50 group-hover:flex hover:text-primary" />
+          </Link>
+        ) : (
+          <PlayCircle
+            className="svg_shadow z-10 mr-1 hidden h-11 w-11 cursor-pointer p-1 text-white/50 group-hover:flex hover:text-primary"
+            onClick={handlePlayClick}
+          />
+        )}
 
         <InfoIcon
           className="svg_shadow z-10 hidden h-11 w-11 cursor-pointer p-1 text-white/50 group-hover:flex hover:text-primary"
           onClick={() =>
             setInfoModalStats({
               isOpen: true,
-              mediaType: mediaItem?.media_type as string,
+              mediaType: mediaType,
               id: mediaItem?.id as number,
             })
           }

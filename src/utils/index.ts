@@ -1,13 +1,5 @@
 import { TMediaCategory, TMediaItem, TPopulatedMediaItem } from '@/types'
-import { getMediaByGenre, getMediaList, getTrendingMedia } from './tmdbApi'
-
-// | Función para truncar un texto a un número de palabras
-export const truncateText = (text: string, wordsCount: number): string => {
-  const words = text.split(' ')
-  if (words.length <= wordsCount) return text
-
-  return `${words.slice(0, wordsCount).join(' ')}...`
-}
+import { getMediaByGenre, getMediaList, getSearchMedia, getSimilarMedia, getTrendingMedia } from './tmdbApi'
 
 // | Función de utilidad para poblar los items de media
 const populateMediaItem = (item: TMediaItem, defaultMediaType?: 'movie' | 'tv'): TPopulatedMediaItem => ({
@@ -109,4 +101,42 @@ export const fetchMoviesMediaData = async () => {
     console.error('Error fetching Movies page media:', error)
     return []
   }
+}
+
+// | Función para obtener los datos de media similares en la página de reproducción
+export const fetchSimilarMediaData = async (mediaType: string, id: string) => {
+  try {
+    const similarMedia: TMediaItem[] = await getSimilarMedia(mediaType, id)
+    const filteredMedia = similarMedia.filter((item) => item.poster_path !== null || item.backdrop_path !== null)
+
+    return [createMediaCategory('Similares', filteredMedia, mediaType as 'movie' | 'tv')]
+  } catch (error) {
+    console.error('Error fetching Similar media:', error)
+    return []
+  }
+}
+
+// | Función para obtener los datos de media en la página de búsqueda
+export const fetchSearchMediaData = async (query: string) => {
+  try {
+    const searchMedia: TMediaItem[] = await getSearchMedia(query)
+    const filteredMedia = searchMedia.filter(
+      (item) =>
+        ((item.media_type === 'movie' || item.media_type === 'tv') && item.poster_path !== null) ||
+        item.backdrop_path !== null,
+    )
+
+    return [createMediaCategory('Resultados de búsqueda', filteredMedia)]
+  } catch (error) {
+    console.error('Error fetching Search page media:', error)
+    return []
+  }
+}
+
+//  Función para truncar un texto a un número de palabras
+export const truncateText = (text: string, wordsCount: number): string => {
+  const words = text.split(' ')
+  if (words.length <= wordsCount) return text
+
+  return `${words.slice(0, wordsCount).join(' ')}...`
 }
