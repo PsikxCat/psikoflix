@@ -1,13 +1,29 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { onAuthStateChanged } from 'firebase/auth'
 import { Outlet } from 'react-router-dom'
 
 import { GlobalContext } from '@/context/GlobalContext'
-import { Footer, MoreInfoModal, Navbar } from '@/components'
+import { Footer, LoaderSpinner, MoreInfoModal, Navbar } from '@/components'
 import { LoginPage } from '@/pages'
+import { auth } from '@/utils/firebase'
 
 export default function Layout() {
-  const { isUserLogged, infoModalStats } = useContext(GlobalContext)
+  const { setIsUserLogged, isUserLogged, infoModalStats } = useContext(GlobalContext)
+  const [isLoading, setIsLoading] = useState(true)
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsUserLogged(!!user)
+      setIsLoading(false)
+    })
+
+    // Limpieza del efecto
+    return () => unsubscribe()
+  }, [setIsUserLogged])
+
+  if (isLoading) {
+    return <LoaderSpinner />
+  }
   if (!isUserLogged) return <LoginPage />
 
   return (

@@ -1,4 +1,7 @@
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useContext } from 'react'
+
+import { GlobalContext } from '@/context/GlobalContext'
+import { logoutUser } from '@/utils/firebase'
 
 interface UserMenuProps {
   setIsMenuOpen: Dispatch<SetStateAction<boolean>>
@@ -6,10 +9,13 @@ interface UserMenuProps {
 }
 
 export default function UserMenu({ setIsMenuOpen, isScrolled }: UserMenuProps) {
+  const { setIsUserLogged } = useContext(GlobalContext)
+
   const handleClose = () => setIsMenuOpen(false)
 
   const handleSignOut = () => {
-    // Cerrar sesión
+    logoutUser()
+    setIsUserLogged(false)
     handleClose()
   }
 

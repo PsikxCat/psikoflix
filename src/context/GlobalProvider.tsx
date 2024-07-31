@@ -10,7 +10,7 @@ export default function GlobalProvider({ children }: GlobalProviderProps) {
   const [homePageMedia, setHomePageMedia] = useState<TMediaCategory[] | []>([])
   const [TVPageMedia, setTVPageMedia] = useState<TMediaCategory[] | []>([])
   const [MoviesPageMedia, setMoviesPageMedia] = useState<TMediaCategory[] | []>([])
-  const [isUserLogged, setIsUserLogged] = useState<boolean>(true) // ! Pasar a false !!!!!!!!!!!!!!!!!!!
+  const [isUserLogged, setIsUserLogged] = useState<boolean>(false)
   const [infoModalStats, setInfoModalStats] = useState<TInfoModal>({
     isOpen: false,
     mediaType: null,

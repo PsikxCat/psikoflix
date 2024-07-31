@@ -33,7 +33,7 @@ export default function Banner({ media }: IBannerProps) {
 
       {/* botones */}
       <div className="flex space-x-3 pt-1">
-        <Link to={`/watch/${media?.media_type}/${media?.id}${media?.backdrop_path || media?.poster_path}`}>
+        <Link to={`/watch/${media?.media_type}/${media?.id}${media?.poster_path || media?.backdrop_path}`}>
           <button className="flex cursor-pointer items-center space-x-2 rounded-md bg-accent px-4 py-2 text-fluid-btn text-white transition hover:opacity-75">
             <PlayCircle className="h-4 w-4 md:h-6 md:w-6 lg:h-8 lg:w-8" />
             <span className="pr-1">Play</span>
