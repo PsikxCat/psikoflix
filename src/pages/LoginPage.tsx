@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { registerUser, loginUser } from '@/utils/firebase'
+import { toast } from 'react-toastify'
 
 export default function LoginPage() {
   const [loginState, setLoginState] = useState<'signIn' | 'register'>('signIn')
@@ -14,10 +15,12 @@ export default function LoginPage() {
     const password = formData.get('password') as string
 
     if (loginState === 'signIn') {
-      await loginUser(email, password)
+      const sigIn = await loginUser(email.trim(), password.trim())
+      if (!sigIn.success) toast.error(sigIn.message)
     } else {
       const name = formData.get('name') as string
-      await registerUser(name, email, password)
+      const register = await registerUser(name.trim(), email.trim(), password.trim())
+      if (!register.success) toast.error(register.message)
     }
   }
 
