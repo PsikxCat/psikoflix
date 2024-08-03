@@ -9,13 +9,17 @@ interface UserMenuProps {
 }
 
 export default function UserMenu({ setIsMenuOpen, isScrolled }: UserMenuProps) {
-  const { setIsUserLogged } = useContext(GlobalContext)
+  const { setUserAuth } = useContext(GlobalContext)
 
   const handleClose = () => setIsMenuOpen(false)
 
   const handleSignOut = () => {
     logoutUser()
-    setIsUserLogged(false)
+    setUserAuth({
+      isUserLogged: false,
+      userId: null,
+      favorites: null,
+    })
     handleClose()
   }
 

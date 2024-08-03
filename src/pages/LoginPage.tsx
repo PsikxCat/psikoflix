@@ -16,6 +16,7 @@ export default function LoginPage() {
 
     if (loginState === 'signIn') {
       const sigIn = await loginUser(email.trim(), password.trim())
+      console.log('sigIn', sigIn)
       if (!sigIn.success) toast.error(sigIn.message)
     } else {
       const name = formData.get('name') as string

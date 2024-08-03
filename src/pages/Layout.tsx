@@ -3,28 +3,82 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { Outlet } from 'react-router-dom'
 
 import { GlobalContext } from '@/context/GlobalContext'
-import { Footer, LoaderSpinner, MoreInfoModal, Navbar } from '@/components'
+import { auth, getFavorites } from '@/utils/firebase'
 import { LoginPage } from '@/pages'
-import { auth } from '@/utils/firebase'
+import { Footer, LoaderSpinner, MoreInfoModal, Navbar } from '@/components'
 
 export default function Layout() {
-  const { setIsUserLogged, isUserLogged, infoModalStats } = useContext(GlobalContext)
+  const { userAuth, setUserAuth, infoModalStats, setHomePageMedia, setTVPageMedia, setMoviesPageMedia } =
+    useContext(GlobalContext)
   const [isLoading, setIsLoading] = useState(true)
+  console.log('userAuth', userAuth)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsUserLogged(!!user)
+    const cancelAuthListener = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const favorites = await getFavorites(user.uid)
+
+        setUserAuth({
+          isUserLogged: true,
+          userId: user.uid,
+          favorites,
+        })
+      } else {
+        setUserAuth({
+          isUserLogged: false,
+          userId: null,
+          favorites: [],
+        })
+      }
+
       setIsLoading(false)
     })
 
     // Limpieza del efecto
-    return () => unsubscribe()
-  }, [setIsUserLogged])
+    return () => cancelAuthListener()
+  }, [])
+
+  useEffect(() => {
+    if (userAuth.favorites?.length) {
+      setHomePageMedia((prev) =>
+        prev.map((category) => ({
+          ...category,
+          media: category.media.map((media) =>
+            userAuth.favorites!.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
+              ? { ...media, isFavorite: true }
+              : { ...media, isFavorite: false },
+          ),
+        })),
+      )
+
+      setTVPageMedia((prev) =>
+        prev.map((category) => ({
+          ...category,
+          media: category.media.map((media) =>
+            userAuth.favorites!.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
+              ? { ...media, isFavorite: true }
+              : { ...media, isFavorite: false },
+          ),
+        })),
+      )
+
+      setMoviesPageMedia((prev) =>
+        prev.map((category) => ({
+          ...category,
+          media: category.media.map((media) =>
+            userAuth.favorites!.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
+              ? { ...media, isFavorite: true }
+              : { ...media, isFavorite: false },
+          ),
+        })),
+      )
+    }
+  }, [userAuth.favorites])
 
   if (isLoading) {
     return <LoaderSpinner />
   }
-  if (!isUserLogged) return <LoginPage />
+  if (!userAuth.isUserLogged) return <LoginPage />
 
   return (
     <section className="flex_center_col min-h-[100svh]">

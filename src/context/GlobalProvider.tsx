@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { GlobalContext } from './GlobalContext'
-import { TMediaCategory, TInfoModal } from '@/types'
+import { TMediaCategory, TInfoModal, TUserAuth } from '@/types'
 
 interface GlobalProviderProps {
   children: React.ReactNode
@@ -10,7 +10,11 @@ export default function GlobalProvider({ children }: GlobalProviderProps) {
   const [homePageMedia, setHomePageMedia] = useState<TMediaCategory[] | []>([])
   const [TVPageMedia, setTVPageMedia] = useState<TMediaCategory[] | []>([])
   const [MoviesPageMedia, setMoviesPageMedia] = useState<TMediaCategory[] | []>([])
-  const [isUserLogged, setIsUserLogged] = useState<boolean>(false)
+  const [userAuth, setUserAuth] = useState<TUserAuth>({
+    isUserLogged: false,
+    userId: null,
+    favorites: null,
+  })
   const [infoModalStats, setInfoModalStats] = useState<TInfoModal>({
     isOpen: false,
     mediaType: null,
@@ -26,10 +30,10 @@ export default function GlobalProvider({ children }: GlobalProviderProps) {
         setTVPageMedia,
         MoviesPageMedia,
         setMoviesPageMedia,
-        isUserLogged,
-        setIsUserLogged,
         infoModalStats,
         setInfoModalStats,
+        userAuth,
+        setUserAuth,
       }}
     >
       {children}

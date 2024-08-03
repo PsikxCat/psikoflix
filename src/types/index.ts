@@ -57,3 +57,18 @@ export type TInfoModal = {
   mediaType: string | null
   id: number | null
 }
+
+export type TFavoriteMedia = {
+  id: number
+  isFavorite: boolean
+  media_type: string
+  title: string
+  backdrop_path: string
+  poster_path: string
+}
+
+export type TUserAuth = {
+  isUserLogged: boolean
+  userId: string | null
+  favorites: TFavoriteMedia[] | null
+}

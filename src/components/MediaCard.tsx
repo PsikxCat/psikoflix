@@ -1,9 +1,11 @@
 import { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Plus, InfoIcon, PlayCircle } from 'lucide-react'
+import { toast } from 'react-toastify'
+import { Plus, Check, InfoIcon, PlayCircle } from 'lucide-react'
 
 import { GlobalContext } from '@/context/GlobalContext'
 import { TPopulatedMediaItem } from '@/types'
+import { addFavorite, removeFavorite } from '@/utils/firebase'
 
 interface IMediaCardProps {
   mediaItem: TPopulatedMediaItem
@@ -11,7 +13,7 @@ interface IMediaCardProps {
 }
 
 export default function MediaCard({ mediaItem, isFromModal }: IMediaCardProps) {
-  const { setInfoModalStats } = useContext(GlobalContext)
+  const { setInfoModalStats, userAuth, setUserAuth } = useContext(GlobalContext)
   const navigate = useNavigate()
   const mediaType = mediaItem?.media_type as string
 
@@ -23,6 +25,39 @@ export default function MediaCard({ mediaItem, isFromModal }: IMediaCardProps) {
       mediaType: null,
       id: null,
     })
+  }
+
+  const handleFavoriteClick = async () => {
+    if (!userAuth.isUserLogged) return
+
+    if (!mediaItem.isFavorite) {
+      setUserAuth((prev) => ({
+        ...prev,
+        favorites: [
+          ...prev.favorites!,
+          {
+            id: mediaItem.id,
+            isFavorite: true,
+            media_type: mediaItem.media_type,
+            title: mediaItem.title,
+            backdrop_path: mediaItem.backdrop_path,
+            poster_path: mediaItem.poster_path,
+          },
+        ],
+      }))
+      toast.success('Agregado a favoritos')
+
+      await addFavorite(userAuth.userId!, mediaItem)
+    } else {
+      setUserAuth((prev) => ({
+        ...prev,
+        favorites: prev.favorites!.filter((fav) => fav.id !== mediaItem.id),
+      }))
+
+      toast.error('Eliminado de favoritos')
+
+      await removeFavorite(userAuth.userId!, mediaItem.id)
+    }
   }
 
   return (
@@ -54,10 +89,17 @@ export default function MediaCard({ mediaItem, isFromModal }: IMediaCardProps) {
 
       {/* Botones */}
       <div className="flex_center absolute bottom-0 hidden w-full pb-2">
-        <Plus
-          className="svg_shadow z-10 hidden h-11 w-11 cursor-pointer p-1 text-white/50 group-hover:flex hover:text-primary"
-          onClick={() => alert('TODO: Agregar a la lista')}
-        />
+        {mediaItem.isFavorite ? (
+          <Check
+            className="svg_shadow z-10 hidden h-11 w-11 cursor-pointer p-1 text-green-500 opacity-50 group-hover:flex hover:opacity-100"
+            onClick={() => handleFavoriteClick()}
+          />
+        ) : (
+          <Plus
+            className="svg_shadow z-10 hidden h-11 w-11 cursor-pointer p-1 text-white/50 group-hover:flex hover:text-primary"
+            onClick={() => handleFavoriteClick()}
+          />
+        )}
 
         {!isFromModal ? (
           <Link
