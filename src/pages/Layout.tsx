@@ -8,10 +8,8 @@ import { LoginPage } from '@/pages'
 import { Footer, LoaderSpinner, MoreInfoModal, Navbar } from '@/components'
 
 export default function Layout() {
-  const { userAuth, setUserAuth, infoModalStats, setHomePageMedia, setTVPageMedia, setMoviesPageMedia } =
-    useContext(GlobalContext)
+  const { userAuth, setUserAuth, infoModalStats } = useContext(GlobalContext)
   const [isLoading, setIsLoading] = useState(true)
-  console.log('userAuth', userAuth)
 
   useEffect(() => {
     const cancelAuthListener = onAuthStateChanged(auth, async (user) => {
@@ -37,43 +35,6 @@ export default function Layout() {
     // Limpieza del efecto
     return () => cancelAuthListener()
   }, [])
-
-  useEffect(() => {
-    if (userAuth.favorites?.length) {
-      setHomePageMedia((prev) =>
-        prev.map((category) => ({
-          ...category,
-          media: category.media.map((media) =>
-            userAuth.favorites!.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
-              ? { ...media, isFavorite: true }
-              : { ...media, isFavorite: false },
-          ),
-        })),
-      )
-
-      setTVPageMedia((prev) =>
-        prev.map((category) => ({
-          ...category,
-          media: category.media.map((media) =>
-            userAuth.favorites!.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
-              ? { ...media, isFavorite: true }
-              : { ...media, isFavorite: false },
-          ),
-        })),
-      )
-
-      setMoviesPageMedia((prev) =>
-        prev.map((category) => ({
-          ...category,
-          media: category.media.map((media) =>
-            userAuth.favorites!.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
-              ? { ...media, isFavorite: true }
-              : { ...media, isFavorite: false },
-          ),
-        })),
-      )
-    }
-  }, [userAuth.favorites])
 
   if (isLoading) {
     return <LoaderSpinner />

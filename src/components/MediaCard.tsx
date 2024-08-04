@@ -4,11 +4,11 @@ import { toast } from 'react-toastify'
 import { Plus, Check, InfoIcon, PlayCircle } from 'lucide-react'
 
 import { GlobalContext } from '@/context/GlobalContext'
-import { TPopulatedMediaItem } from '@/types'
+import { TFavoriteMedia, TPopulatedMediaItem } from '@/types'
 import { addFavorite, removeFavorite } from '@/utils/firebase'
 
 interface IMediaCardProps {
-  mediaItem: TPopulatedMediaItem
+  mediaItem: TPopulatedMediaItem | TFavoriteMedia
   isFromModal?: boolean
 }
 

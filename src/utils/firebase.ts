@@ -1,4 +1,4 @@
-import { TPopulatedMediaItem } from '@/types'
+import { TFavoriteMedia, TPopulatedMediaItem } from '@/types'
 import { initializeApp } from 'firebase/app'
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { collection, deleteDoc, doc, getDocs, getFirestore, setDoc } from 'firebase/firestore'
@@ -150,7 +150,10 @@ export const logoutUser = async () => {
 }
 
 // | Funcion agregar favorito a usuario
-export const addFavorite = async (userId: string, mediaItem: TPopulatedMediaItem): Promise<boolean> => {
+export const addFavorite = async (
+  userId: string,
+  mediaItem: TPopulatedMediaItem | TFavoriteMedia,
+): Promise<boolean> => {
   try {
     await setDoc(favoriteDocRef(userId, mediaItem.id), {
       id: mediaItem.id,

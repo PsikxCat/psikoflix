@@ -6,7 +6,7 @@ import { fetchMoviesMediaData } from '@/utils'
 import { Banner, LoaderSpinner, MediaCarousel } from '@/components'
 
 export default function MoviesPage() {
-  const { MoviesPageMedia, setMoviesPageMedia } = useContext(GlobalContext)
+  const { MoviesPageMedia, setMoviesPageMedia, userAuth } = useContext(GlobalContext)
   const [bannerMedia, setBannerMedia] = useState<TPopulatedMediaItem | null>(null)
   const [pageLoader, setPageLoader] = useState<boolean>(true)
 
@@ -27,7 +27,16 @@ export default function MoviesPage() {
 
     ;(async () => {
       const newMoviesPageMedia = await fetchMoviesMediaData()
-      setMoviesPageMedia(newMoviesPageMedia)
+      setMoviesPageMedia(
+        newMoviesPageMedia.map((category) => ({
+          ...category,
+          media: category.media.map((media) =>
+            userAuth.favorites?.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
+              ? { ...media, isFavorite: true }
+              : { ...media, isFavorite: false },
+          ),
+        })),
+      )
 
       if (newMoviesPageMedia.length > 0 && newMoviesPageMedia[0].media.length > 0) {
         const newBanner = selectRandomBanner(newMoviesPageMedia[0].media)
@@ -37,6 +46,21 @@ export default function MoviesPage() {
 
     setTimeout(() => setPageLoader(false), 500)
   }, [selectRandomBanner])
+
+  useEffect(() => {
+    if (userAuth.favorites?.length) {
+      setMoviesPageMedia((prev) =>
+        prev.map((category) => ({
+          ...category,
+          media: category.media.map((media) =>
+            userAuth.favorites!.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
+              ? { ...media, isFavorite: true }
+              : { ...media, isFavorite: false },
+          ),
+        })),
+      )
+    }
+  }, [userAuth.favorites])
 
   if (pageLoader) return <LoaderSpinner />
 

@@ -6,7 +6,7 @@ import { fetchHomeMediaData } from '@/utils'
 import { Banner, LoaderSpinner, MediaCarousel } from '@/components'
 
 export default function HomePage() {
-  const { homePageMedia, setHomePageMedia } = useContext(GlobalContext)
+  const { homePageMedia, setHomePageMedia, userAuth } = useContext(GlobalContext)
   const [bannerMedia, setBannerMedia] = useState<TPopulatedMediaItem | null>(null)
   const [pageLoader, setPageLoader] = useState<boolean>(true)
 
@@ -27,7 +27,17 @@ export default function HomePage() {
 
     ;(async () => {
       const newHomePageMedia = await fetchHomeMediaData()
-      setHomePageMedia(newHomePageMedia)
+
+      setHomePageMedia(
+        newHomePageMedia.map((category) => ({
+          ...category,
+          media: category.media.map((media) =>
+            userAuth.favorites?.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
+              ? { ...media, isFavorite: true }
+              : { ...media, isFavorite: false },
+          ),
+        })),
+      )
 
       if (newHomePageMedia.length > 0 && newHomePageMedia[0].media.length > 0) {
         const newBanner = selectRandomBanner(newHomePageMedia[0].media)
@@ -37,6 +47,21 @@ export default function HomePage() {
 
     setTimeout(() => setPageLoader(false), 300)
   }, [fetchHomeMediaData, selectRandomBanner])
+
+  useEffect(() => {
+    if (userAuth.favorites?.length) {
+      setHomePageMedia((prev) =>
+        prev.map((category) => ({
+          ...category,
+          media: category.media.map((media) =>
+            userAuth.favorites!.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
+              ? { ...media, isFavorite: true }
+              : { ...media, isFavorite: false },
+          ),
+        })),
+      )
+    }
+  }, [userAuth.favorites])
 
   if (pageLoader) return <LoaderSpinner />
 

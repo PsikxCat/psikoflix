@@ -6,7 +6,7 @@ import { fetchHomeMediaData, fetchTVMediaData } from '@/utils'
 import { Banner, LoaderSpinner, MediaCarousel } from '@/components'
 
 export default function TVPage() {
-  const { TVPageMedia, setTVPageMedia } = useContext(GlobalContext)
+  const { TVPageMedia, setTVPageMedia, userAuth } = useContext(GlobalContext)
   const [bannerMedia, setBannerMedia] = useState<TPopulatedMediaItem | null>(null)
   const [pageLoader, setPageLoader] = useState<boolean>(true)
 
@@ -27,7 +27,16 @@ export default function TVPage() {
 
     ;(async () => {
       const newTVPageMedia = await fetchTVMediaData()
-      setTVPageMedia(newTVPageMedia)
+      setTVPageMedia(
+        newTVPageMedia.map((category) => ({
+          ...category,
+          media: category.media.map((media) =>
+            userAuth.favorites?.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
+              ? { ...media, isFavorite: true }
+              : { ...media, isFavorite: false },
+          ),
+        })),
+      )
 
       if (newTVPageMedia.length > 0 && newTVPageMedia[0].media.length > 0) {
         const newBanner = selectRandomBanner(newTVPageMedia[0].media)
@@ -37,6 +46,21 @@ export default function TVPage() {
 
     setTimeout(() => setPageLoader(false), 500)
   }, [fetchHomeMediaData, selectRandomBanner])
+
+  useEffect(() => {
+    if (userAuth.favorites?.length) {
+      setTVPageMedia((prev) =>
+        prev.map((category) => ({
+          ...category,
+          media: category.media.map((media) =>
+            userAuth.favorites!.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
+              ? { ...media, isFavorite: true }
+              : { ...media, isFavorite: false },
+          ),
+        })),
+      )
+    }
+  }, [userAuth.favorites])
 
   if (pageLoader) return <LoaderSpinner />
 
