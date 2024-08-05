@@ -1,7 +1,8 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
 
 import { GlobalContext } from '@/context/GlobalContext'
-import { TPopulatedMediaItem } from '@/types'
+import { TMediaCategory, TPopulatedMediaItem } from '@/types'
+import { useConfigureFavorites } from '@/hooks/useConfigureFavorites'
 import { fetchMoviesMediaData } from '@/utils'
 import { Banner, LoaderSpinner, MediaCarousel } from '@/components'
 
@@ -13,6 +14,8 @@ export default function MoviesPage() {
   const selectRandomBanner = useCallback((mediaList: TPopulatedMediaItem[]) => {
     return mediaList[Math.floor(Math.random() * mediaList.length)]
   }, [])
+
+  const configureFavorites = useConfigureFavorites()
 
   useEffect(() => {
     setPageLoader(true)
@@ -27,40 +30,33 @@ export default function MoviesPage() {
 
     ;(async () => {
       const newMoviesPageMedia = await fetchMoviesMediaData()
-      setMoviesPageMedia(
-        newMoviesPageMedia.map((category) => ({
-          ...category,
-          media: category.media.map((media) =>
-            userAuth.favorites?.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
-              ? { ...media, isFavorite: true }
-              : { ...media, isFavorite: false },
-          ),
-        })),
-      )
 
-      if (newMoviesPageMedia.length > 0 && newMoviesPageMedia[0].media.length > 0) {
-        const newBanner = selectRandomBanner(newMoviesPageMedia[0].media)
+      const configureMedia: TMediaCategory[] = newMoviesPageMedia.map((category) => ({
+        ...category,
+        media: configureFavorites(category.media),
+      }))
+
+      setMoviesPageMedia(configureMedia)
+
+      if (configureMedia.length > 0 && configureMedia[0].media.length > 0) {
+        const newBanner = selectRandomBanner(configureMedia[0].media)
         setBannerMedia(newBanner)
       }
     })()
 
     setTimeout(() => setPageLoader(false), 500)
-  }, [selectRandomBanner])
+  }, [configureFavorites])
 
   useEffect(() => {
     if (userAuth.favorites?.length) {
       setMoviesPageMedia((prev) =>
         prev.map((category) => ({
           ...category,
-          media: category.media.map((media) =>
-            userAuth.favorites!.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
-              ? { ...media, isFavorite: true }
-              : { ...media, isFavorite: false },
-          ),
+          media: configureFavorites(category.media),
         })),
       )
     }
-  }, [userAuth.favorites])
+  }, [configureFavorites, userAuth.favorites])
 
   if (pageLoader) return <LoaderSpinner />
 

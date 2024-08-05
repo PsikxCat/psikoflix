@@ -1,8 +1,9 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
 
 import { GlobalContext } from '@/context/GlobalContext'
-import { TPopulatedMediaItem } from '@/types'
-import { fetchHomeMediaData, fetchTVMediaData } from '@/utils'
+import { TMediaCategory, TPopulatedMediaItem } from '@/types'
+import { useConfigureFavorites } from '@/hooks/useConfigureFavorites'
+import { fetchTVMediaData } from '@/utils'
 import { Banner, LoaderSpinner, MediaCarousel } from '@/components'
 
 export default function TVPage() {
@@ -14,10 +15,12 @@ export default function TVPage() {
     return mediaList[Math.floor(Math.random() * mediaList.length)]
   }, [])
 
+  const configureFavorites = useConfigureFavorites()
+
   useEffect(() => {
     setPageLoader(true)
 
-    // Si ya tenemos los datos de la página de inicio, seleccionamos un banner aleatorio
+    // Si ya tenemos los datos de la página TV, seleccionamos un banner aleatorio
     if (TVPageMedia.length > 0 && TVPageMedia[0].media.length > 0) {
       const newBanner = selectRandomBanner(TVPageMedia[0].media)
       setBannerMedia(newBanner)
@@ -27,40 +30,33 @@ export default function TVPage() {
 
     ;(async () => {
       const newTVPageMedia = await fetchTVMediaData()
-      setTVPageMedia(
-        newTVPageMedia.map((category) => ({
-          ...category,
-          media: category.media.map((media) =>
-            userAuth.favorites?.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
-              ? { ...media, isFavorite: true }
-              : { ...media, isFavorite: false },
-          ),
-        })),
-      )
 
-      if (newTVPageMedia.length > 0 && newTVPageMedia[0].media.length > 0) {
-        const newBanner = selectRandomBanner(newTVPageMedia[0].media)
+      const configuredMedia: TMediaCategory[] = newTVPageMedia.map((category) => ({
+        ...category,
+        media: configureFavorites(category.media),
+      }))
+
+      setTVPageMedia(configuredMedia)
+
+      if (configuredMedia.length > 0 && configuredMedia[0].media.length > 0) {
+        const newBanner = selectRandomBanner(configuredMedia[0].media)
         setBannerMedia(newBanner)
       }
     })()
 
     setTimeout(() => setPageLoader(false), 500)
-  }, [fetchHomeMediaData, selectRandomBanner])
+  }, [configureFavorites])
 
   useEffect(() => {
     if (userAuth.favorites?.length) {
       setTVPageMedia((prev) =>
         prev.map((category) => ({
           ...category,
-          media: category.media.map((media) =>
-            userAuth.favorites!.some((fav) => fav.id === media.id && fav.media_type === media.media_type)
-              ? { ...media, isFavorite: true }
-              : { ...media, isFavorite: false },
-          ),
+          media: configureFavorites(category.media),
         })),
       )
     }
-  }, [userAuth.favorites])
+  }, [configureFavorites, userAuth.favorites])
 
   if (pageLoader) return <LoaderSpinner />
 
