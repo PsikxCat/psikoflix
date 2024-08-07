@@ -1,30 +1,42 @@
-# React + TypeScript + Vite
+# PsikoFlix
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descripción
+PsikoFlix es un clon de la interfaz de usuario de Netflix, desarrollado con React y Vite. Utiliza la API de TMDB para mostrar información sobre películas y series, ofreciendo una experiencia similar a la plataforma de streaming original.
 
-Currently, two official plugins are available:
+## Demostración en Vivo
+Visita y prueba el proyecto desplegado en: [https://psikoflix.netlify.app/](https://psikoflix.netlify.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Características
+- Interfaz de usuario similar a Netflix
+- Autenticación de usuarios con sistema de credenciales
+- Catálogo de películas y series obtenido de la API de TMDB
+- Reproducción de trailers de YouTube al seleccionar un título
+- Funcionalidad de "Mi Lista" para guardar favoritos
+- Diseño responsivo para diferentes dispositivos
 
-## Expanding the ESLint configuration
+## Tecnologías Utilizadas
+- React 18.3.1
+- TypeScript
+- Vite como build tool
+- Firebase para autenticación y almacenamiento de datos de usuario
+- React Router para navegación
+- Tailwind CSS para estilos
+- React Player para reproducción de videos
+- React Toastify para notificaciones
+- Lucide React para iconos
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Uso
+1. Visita la URL del proyecto.
+2. Regístrate o inicia sesión con tus credenciales.
+3. Explora el catálogo de películas y series en diferentes categorías.
+4. Visualiza un título y reproduce su trailer.
+5. Añade o elimina títulos a "Mi Lista".
 
-- Configure the top-level `parserOptions` property like this:
+## Estado del Proyecto
+Proyecto funcional con posibilidades de expansión y mejoras continuas.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Contacto
+- GitHub: [Psikxcat](https://github.com/psikxcat)
+- Email: arevalogrichard@gmail.com
+- LinkedIn: [Richard Arevalo](https://www.linkedin.com/in/arevalorichard/)
+- Sitio web: [richardarevalo.netlify.app](https://richardarevalo.netlify.app/)
